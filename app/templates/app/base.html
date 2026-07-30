@@ -45,6 +45,8 @@
     const csrftoken = getCookie('csrftoken');
     </script>
     <title>WED Báng hàng </title>
+    <!-- Khai báo Favicon hiển thị trên thẻ trình duyệt -->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/images/rong.jpg' %}" />
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
@@ -52,7 +54,10 @@
     <!-- Đầu  menu-->
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">WELLCOME</a>
+    <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+    <img src="{% static 'app/images/rong.jpg' %}" alt="Logo" width="30" height="30" class="d-inline-block align-text-top me-2" style="object-fit: cover; border-radius: 50%;">
+    Chào Mừng
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -89,9 +94,6 @@
     
       <div class"from-inline my-2 my-lg-0" style = 'visibility: {{user_login}}'>
         <span>Xin chào {{request.user}}</span>
-        {% if user.is_superuser %}
-        <a href="/admin/" class="btn btn-warning btn-sm mx-2" target="_blank">Trang quản trị</a>
-        {% endif %}
         <span><a href= "{% url 'logout' %}">Thoát</a></span>
       </div>
           <a class="nav-link" href="{% url "cart" %}">Giỏ hàng</a>
