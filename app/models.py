@@ -5,12 +5,13 @@ from django.contrib.auth.forms import UserCreationForm
 # Create your models here.
 #  bang phan loai hang hao
 class Category(models.Model):
-    sub_category = models.ForeignKey('self',on_delete=models.CASCADE,related_name="sub_categories", null=True, blank=True)
-    is_sub = models.BooleanField(default=False)
-    name = models.CharField(max_length=100, null=True)
-    slug = models.SlugField(max_length=100,unique=True)
+    sub_category = models.ForeignKey('self', on_delete=models.CASCADE, related_name="sub_categories", null=True, blank=True, verbose_name="Danh mục cha")
+    is_sub = models.BooleanField(default=False, verbose_name="Là danh mục phụ")
+    name = models.CharField(max_length=100, null=True, verbose_name="Tên danh mục")
+    slug = models.SlugField(max_length=100, unique=True, verbose_name="Slug (Đường dẫn)")
+
     def __str__(self):
-        return self.name
+        return self.name or ''
 class Changeform(UserCreationForm):
     class Meta:
         model= User 
@@ -23,14 +24,14 @@ class Changeform(UserCreationForm):
 #     def __str__(self):
 #         return self.name
 class Product(models.Model):
-    category = models.ManyToManyField(Category,related_name='product')
-    name = models.CharField(max_length=100, null=True, blank=True)
-    price = models.FloatField(null=True, blank=False, help_text="Đơn vị: VND")
-    image = models.ImageField(null=True, blank=True)
-    digital = models.BooleanField(default=False, null=True, blank=False)
-    detail = models.TextField(null=True,blank=True)
+    category = models.ManyToManyField(Category,related_name='product', verbose_name="Danh mục", blank=True)
+    name = models.CharField(max_length=100, null=True, blank=True, verbose_name='Tên sản phẩm')
+    price = models.FloatField(null=True, blank=False,verbose_name="Giá", help_text="Đơn vị: VND")
+    image = models.ImageField(null=True, blank=True,verbose_name="Hình ảnh")
+    digital = models.BooleanField(default=False, null=True, blank=False,verbose_name='số sản phẩm')
+    detail = models.TextField(null=True,blank=True,verbose_name="Mô tả chi tiết")
     def __str__(self):
-        return self.name
+        return self.name or ''
     # điều chỉnh thuộc tính 
     @property 
     def ImageURL(self):
@@ -42,11 +43,10 @@ class Product(models.Model):
 
 
 class Order(models.Model):
-    customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=False)
-    day = models.DateTimeField(auto_now_add=True) 
-    complete = models.BooleanField(default=False, null=True, blank=False)
-    transaction_id = models.CharField(max_length=100, null=True, blank=True)
-
+    customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=False, verbose_name="Khách hàng")
+    day = models.DateTimeField(auto_now_add=True, verbose_name="Ngày đặt") 
+    complete = models.BooleanField(default=False, null=True, blank=False, verbose_name="Đã hoàn thành")
+    transaction_id = models.CharField(max_length=100, null=True, blank=True, verbose_name="Mã giao dịch")
     def __str__(self):
         return str(self.id)
     #  đếm số lượng sản phẩm 
@@ -63,26 +63,28 @@ class Order(models.Model):
         total = sum([item.get_total for item in orderitems])
         return total
 class OrderItem(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=False)
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=False)
-    quantity = models.IntegerField(default=0, null=True, blank=True)
-    day_added = models.DateTimeField(auto_now_add=True)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=False, verbose_name="Sản phẩm")
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=False, verbose_name="Đơn hàng")
+    quantity = models.IntegerField(default=0, null=True, blank=True, verbose_name="Số lượng")
+    day_added = models.DateTimeField(auto_now_add=True, verbose_name="Ngày thêm")
 # tính tổng tiền của từng sản phẩm
     @property
     def get_total(self):
         total = self.product.price * self.quantity
         return total
 class ShippingAddress(models.Model):
-    customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=False)
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=False)
-    address = models.CharField(max_length=200, null=True, blank=True)
-    city = models.CharField(max_length=200, null=True, blank=True)
-    state = models.CharField(max_length=200, null=True, blank=True)
-    mobile = models.CharField(max_length=10, null=True, blank=True)
-    additional_address = models.CharField(max_length=200, null=True, blank=False)
-    country = models.CharField(max_length=200, null=True, blank=True)
-    day_added = models.DateTimeField(auto_now_add=True)
-
+    customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=False, verbose_name="Khách hàng")
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=False, verbose_name="Đơn hàng")
+    address = models.CharField(max_length=200, null=True, blank=True, verbose_name="Địa chỉ")
+    city = models.CharField(max_length=200, null=True, blank=True, verbose_name="Thành phố")
+    state = models.CharField(max_length=200, null=True, blank=True, verbose_name="Tỉnh/Thành")
+    mobile = models.CharField(max_length=10, null=True, blank=True, verbose_name="Số điện thoại")
+    additional_address = models.CharField(max_length=200, null=True, blank=False, verbose_name="Địa chỉ bổ sung")
+    country = models.CharField(max_length=200, null=True, blank=True, verbose_name="Quốc gia")
+    day_added = models.DateTimeField(auto_now_add=True, verbose_name="Ngày tạo")
+    class Meta:
+        verbose_name = "Địa chỉ giao hàng"
+        verbose_name_plural = "Địa chỉ giao hàng"
     def __str__(self):
         return self.address
 

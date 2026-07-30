@@ -6,6 +6,7 @@ import json
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
+from .forms import CreateUserForm
 
 # Create your views here.
 def detail(request):
@@ -51,10 +52,10 @@ def search(request):
     return render(request,'app/timkiem.html',{"searched": searched, "keys": keys,'products': products, "cartitems": cartitems})
     
 def register(request):
-    form = Changeform()
+    form = CreateUserForm()
     
     if request.method == 'POST':
-        form = Changeform(request.POST)
+        form = CreateUserForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect("dangnhap")
@@ -145,3 +146,44 @@ def updateItem(request):
         orderItem.delete()
     
     return JsonResponse('đã thêm', safe=False)
+import datetime
+# Lưu địa chỉ 
+def processOrder(request):
+    transaction_id = datetime.datetime.now().timestamp()
+    data = json.loads(request.body)
+
+    if request.user.is_authenticated:
+        customer = request.user
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        total = float(data['form']['total'])
+        order.transaction_id = transaction_id
+
+        # Kiểm tra tổng tiền gửi từ client có khớp với backend không
+        if total == float(order.get_cart_total):
+            order.complete = True
+        order.save()
+        #THÊM ĐOẠN NÀY: Trừ số lượng tồn kho của từng sản phẩm trong đơn
+        for item in order.orderitem_set.all():
+            product = item.product
+            # Nếu sản phẩm có quản lý số lượng tồn kho (giả sử có trường quantity/stock)
+            # Bạn điều chỉnh tên trường 'quantity' dưới đây theo đúng Model Product của bạn nhé
+            if hasattr(product, 'quantity'): 
+                product.quantity -= item.quantity
+                if product.quantity < 0:
+                    product.quantity = 0
+                product.save()
+
+        order.save()
+        # Lưu thông tin giao hàng
+        ShippingAddress.objects.create(
+            customer=customer,
+            order=order,
+            address=data['shipping']['address'],
+            city=data['shipping']['city'],
+            state=data['shipping']['state'],
+            mobile=data['shipping'].get('mobile', ''),
+        )
+        return JsonResponse('Hoàn tất đặt hàng!', safe=False)
+    else:
+        return JsonResponse('Tài khoản chưa đăng nhập!', safe=False)
+    

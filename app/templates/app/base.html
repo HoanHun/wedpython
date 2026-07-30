@@ -67,9 +67,10 @@
             
           </a>
           <ul class="dropdown-menu">
-            {% for q in categories %}
-            <li><a class="dropdown-item" href="{% url "category" %}?category={{i.slug}}">{{q.name}}</a></li>
-            {% endfor %}
+           {% for q in categories %}
+            
+            <li><a class="dropdown-item" href="{% url "category" %}?category={{q.slug}}">{{q.name}}</a></li>
+          {% endfor %}
           </ul>
         </li>
         <li class="nav-item">
