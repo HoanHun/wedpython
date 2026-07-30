@@ -1,0 +1,112 @@
+{% extends 'app/base.html' %} {% load static %} {% block banner_slider %}
+<div id="carouselExampleCaptions" class="carousel slide">
+  <div class="carousel-indicators">
+    <button
+      type="button"
+      data-bs-target="#carouselExampleCaptions"
+      data-bs-slide-to="0"
+      class="active"
+      aria-current="true"
+      aria-label="Slide 1"
+    ></button>
+    <button
+      type="button"
+      data-bs-target="#carouselExampleCaptions"
+      data-bs-slide-to="1"
+      aria-label="Slide 2"
+    ></button>
+    <button
+      type="button"
+      data-bs-target="#carouselExampleCaptions"
+      data-bs-slide-to="2"
+      aria-label="Slide 3"
+    ></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img
+        src="{% static 'app/images/a1.jpg' %}"
+        class="d-block w-100"
+        alt="..."
+        height="800"
+      />
+      <div class="carousel-caption d-none d-md-block" bg-success text-white>
+        <h5>Áo Hoodie</h5>
+        <p>Thời trang thời thượng</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img
+        src="{% static 'app/images/a2.jpg' %}"
+        class="d-block w-100"
+        alt="..."
+        height="800"
+      />
+      <div class="carousel-caption d-none d-md-block" bg-success text-white>
+        <h5>Quần Jeans</h5>
+        <p>Thời trang nam giới</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img
+        src="{% static 'app/images/a3.jpg' %}"
+        class="d-block w-100"
+        alt="..."
+        height="800"
+      />
+      <div class="carousel-caption d-none d-md-block" bg-success text-white>
+        <h5>Áo Thun</h5>
+        <p>Thời trang nữ giới</p>
+      </div>
+    </div>
+  </div>
+  <button
+    class="carousel-control-prev"
+    type="button"
+    data-bs-target="#carouselExampleCaptions"
+    data-bs-slide="prev"
+  >
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button
+    class="carousel-control-next"
+    type="button"
+    data-bs-target="#carouselExampleCaptions"
+    data-bs-slide="next"
+  >
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Tiếp tục</span>
+  </button>
+</div>
+{% endblock banner_slider %} {% block main-content %}
+<div class="row" style = "width: 100%;"><!-- Hàng -->
+  {% for product in products %} <!-- Lặp qua từng sản phẩm -->
+  <div class="col-lg-3">
+    <!--cột -->
+    <!-- điều chỉnh hình-->
+    <img
+      class="thumbnail"
+      src="{{ product.ImageURL }}"
+      alt="{{ product.name }}"
+    />
+    <!--Thông tin cơ bản và nút thêm vào giỏ hàng-->
+    <div class="box-element product">
+      <h6><strong>{{ product.name }}</strong></h6>
+      <hr />
+      <!-- đưa nút thêm vào -->
+      <button data-product="{{ product.id }}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">
+        Thêm vào giỏ hàng
+      </button>
+      <a class="btn btn-outline-success" href="{% url 'xemct' %}?id={{ product.id }}">Xem chi tiết</a>
+      <h3 style="display: inline-block; float: right">
+        <strong>{{ product.price|floatformat:0 }} VND</strong>
+      </h3>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+</div>
+<br /><br /><br />
+{% endblock main-content%}

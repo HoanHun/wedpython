@@ -1,0 +1,98 @@
+{% extends 'app/base.html' %} {% load static %} {% block login %}
+<style>
+  .bg-custom {
+    background: url("{% static 'app/images/a3.jpg' %}") no-repeat center center
+      fixed;
+    background-size: cover;
+    min-height: 100vh;
+    width: 100%;
+  }
+
+  .card-registration {
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  .card-registration input[type="text"],
+  .card-registration input[type="email"],
+  .card-registration input[type="password"] {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+  }
+</style>
+
+<section
+  class="vh-100 bg-custom d-flex align-items-center justify-content-center"
+>
+  <div class="container py-5 h-100">
+    <div class="row justify-content-center align-items-center h-100">
+      <div class="col-12 col-lg-9 col-xl-7">
+        <div class="card card-registration shadow-2-strong">
+          <div class="card-body p-4 p-md-5">
+            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 text-center fw-bold">
+              Đăng nhập
+            </h3>
+
+            <form method="POST" action="">
+              {% csrf_token %}
+
+              <!--Tên đăng nhập và Email -->
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline">
+                    <label class="form-label fw-bold" for="id_username"
+                      >Tên đăng nhập</label
+                    >
+                    <input type="text" name = 'username' id="firstName" name="first_name" class="form-control form-control-lg" required />
+                    
+                  </div>
+                </div>
+                
+
+              <!--Mật khẩu -->
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline">
+                    <label class="form-label fw-bold" for="id_password1"
+                      >Mật khẩu</label
+                    >
+                    <input type="password" name ='password' id="firstName" name="first_name" class="form-control form-control-lg" required />
+         
+                  </div>
+                  
+                </div>
+                
+              </div>
+              <div class="mt-4 pt-2 text-center">
+                <input
+                  class="btn btn-primary btn-lg px-5"
+                  type="submit"
+                  value="Đăng nhập"
+                />
+              </div>
+                <p class ="text-center h6 fw-bold mb-5 mx-1 mx-md-4 mt-4">Bạn chưa có tài khoản</p>
+
+              <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                <button type="submit" class="btn btn-primary btn-lg"> Đăng ký</button>
+              </div>
+              {% for message in messag %}
+                <pid ="message" class ="text-center h6 fw-bold mb-5 mx-1 mx-md-4 mt-4">{{message}}</p>
+               {% endfor %}
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock login %}

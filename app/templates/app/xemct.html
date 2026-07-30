@@ -1,0 +1,90 @@
+{% extends 'app/base.html' %} {% load static %}
+
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="" />
+  </head>
+  <body>
+    <!--[if lt IE 7]>
+      <p class="browsehappy">
+        You are using an <strong>outdated</strong> browser. Please
+        <a href="#">upgrade your browser</a> to improve your experience.
+      </p>
+    <![endif]-->
+    {% block search %} {% for i in product %}
+    <div class="container mt-5">
+      <div class="row">
+        <!-- Product Images -->
+        <div class="col-md-6 mb-4">
+          <div class="d-flex justify-content-between">
+            <img
+              src="{{i.ImageURL}}"
+              alt="Thumbnail 1"
+              class="thumbnail rounded active"
+              onclick="changeImage(event, this.src)"
+            />
+          </div>
+        </div>
+
+        <!-- Product Details -->
+        <div class="col-md-6">
+          <h2 class="mb-3">{{i.name}}</h2>
+          <p class="text-muted mb-4">{{i.name}}</p>
+          <div class="mb-3">
+            <span class="h4 me-2">{{i.price}}</span>
+          </div>
+          <div class="mb-3">
+            <i class="bi bi-star-fill text-warning"></i>
+            <i class="bi bi-star-fill text-warning"></i>
+            <i class="bi bi-star-fill text-warning"></i>
+            <i class="bi bi-star-fill text-warning"></i>
+            <i class="bi bi-star-half text-warning"></i>
+            <span class="ms-2">4.5 (120 reviews)</span>
+          </div>
+          <p class="mb-4">{{i.detail}}</p>
+          <div class="mb-4">
+            <label for="quantity" class="form-label">Số Lượng:</label>
+            <input
+              type="number"
+              class="form-control"
+              id="quantity"
+              value="1"
+              min="1"
+              style="width: 80px"
+            />
+          </div>
+          <button
+            data-product="{{ i.id }}"
+            data-action="add"
+            class="btn btn-primary btn-lg mb-3 me-2 add-btn update-cart"
+          >
+            <i class="bi bi-cart-plus"></i> Chọn
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function changeImage(event, src) {
+        document.getElementById("mainImage").src = src;
+        document
+          .querySelectorAll(".thumbnail")
+          .forEach((thumb) => thumb.classList.remove("active"));
+        event.target.classList.add("active");
+      }
+    </script>
+    {% endfor %} {% endblock search %}
+    <script src="" async defer></script>
+  </body>
+</html>

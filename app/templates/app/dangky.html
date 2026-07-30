@@ -1,0 +1,125 @@
+{% extends 'app/base.html' %} {% load static %} {% block register %}
+<style>
+  .bg-custom {
+    background: url("{% static 'app/images/a3.jpg' %}") no-repeat center center
+      fixed;
+    background-size: cover;
+    min-height: 100vh;
+    width: 100%;
+  }
+
+  .card-registration {
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  .card-registration input[type="text"],
+  .card-registration input[type="email"],
+  .card-registration input[type="password"] {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+  }
+</style>
+
+<section
+  class="vh-100 bg-custom d-flex align-items-center justify-content-center"
+>
+  <div class="container py-5 h-100">
+    <div class="row justify-content-center align-items-center h-100">
+      <div class="col-12 col-lg-9 col-xl-7">
+        <div class="card card-registration shadow-2-strong">
+          <div class="card-body p-4 p-md-5">
+            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 text-center fw-bold">
+              Đăng Ký
+            </h3>
+
+            <form method="POST" action="">
+              {% csrf_token %}
+
+              <!--Tên đăng nhập và Email -->
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline">
+                    <label class="form-label fw-bold" for="id_username"
+                      >Tên đăng nhập</label
+                    >
+                    {{ form.username }}
+                  </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline">
+                    <label class="form-label fw-bold" for="id_email"
+                      >Email</label
+                    >
+                    {{ form.email }}
+                  </div>
+                </div>
+              </div>
+
+              <!--Họ & Tên -->
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline">
+                    <label class="form-label fw-bold" for="id_first_name"
+                      >Tên</label
+                    >
+                    {{ form.first_name }}
+                  </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline">
+                    <label class="form-label fw-bold" for="id_last_name"
+                      >Họ</label
+                    >
+                    {{ form.last_name }}
+                  </div>
+                </div>
+              </div>
+
+              <!--Mật khẩu và nhập lại MK-->
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline">
+                    <label class="form-label fw-bold" for="id_password1"
+                      >Mật khẩu</label
+                    >
+                    {{ form.password1 }}
+                  </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline">
+                    <label class="form-label fw-bold" for="id_password2"
+                      >Nhập lại mật khẩu</label
+                    >
+                    {{ form.password2 }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Đăng ký -->
+              <div class="mt-4 pt-2 text-center">
+                <input
+                  class="btn btn-primary btn-lg px-5"
+                  type="submit"
+                  value="Đăng ký tài khoản"
+                />
+              </div>
+              <p class="text-center h6 fw-bold md-5 mx-1 mx-md mt-4"> bạn đã có tài khoản rồi <a href= {% url "dangnhap" %}></a></p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock register %}
