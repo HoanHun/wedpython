@@ -44,7 +44,7 @@
     }
     const csrftoken = getCookie('csrftoken');
     </script>
-    <title>WED</title>
+    <title>WED Báng hàng </title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
@@ -89,6 +89,9 @@
     
       <div class"from-inline my-2 my-lg-0" style = 'visibility: {{user_login}}'>
         <span>Xin chào {{request.user}}</span>
+        {% if user.is_superuser %}
+        <a href="/admin/" class="btn btn-warning btn-sm mx-2" target="_blank">Trang quản trị</a>
+        {% endif %}
         <span><a href= "{% url 'logout' %}">Thoát</a></span>
       </div>
           <a class="nav-link" href="{% url "cart" %}">Giỏ hàng</a>
