@@ -93,7 +93,7 @@
     <div class="d-flex align-items-center">
       {% if request.user.is_authenticated %}
         <span class="me-2">Xin chào <strong>{{ request.user.username }}</strong></span>
-
+ư
         {% if request.user.is_superuser or request.user.is_staff %}
           <a href="/admin/" class="btn btn-warning btn-sm me-2" target="_blank">Trang quản trị</a>
         {% endif %}
@@ -103,7 +103,7 @@
         <a class="nav-link me-2" href="{% url 'dangnhap' %}">Đăng nhập</a>
         <a class="nav-link me-3" href="{% url 'dangky' %}">Đăng ký</a>
       {% endif %}
-
+{% comment %} giỏ hàng  {% endcomment %}
       <a href="{% url 'cart' %}" class="d-flex align-items-center text-decoration-none">
         <img id="cart-icon" src="{% static 'app/images/images.jpg' %}" alt="Giỏ hàng" style="width: 25px; height: 25px;" class="me-1">
         <span id="cart-total" class="badge bg-danger rounded-pill">{{ cartitems }}</span>
