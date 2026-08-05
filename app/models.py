@@ -28,7 +28,7 @@ class Changeform(UserCreationForm):
 class Product(models.Model):
     category = models.ManyToManyField(Category,related_name='product', verbose_name="Danh mục", blank=True)
     name = models.CharField(max_length=100, null=True, blank=True, verbose_name='Tên sản phẩm')
-    price = models.FloatField(null=True, blank=False,verbose_name="Giá", help_text="Đơn vị: VND")
+    price = models.BigIntegerField(default=0, verbose_name="Giá", help_text="Đơn vị: VND")
     image = models.ImageField(null=True, blank=True,verbose_name="Hình ảnh")
     digital = models.BooleanField(default=False, null=True, blank=False,verbose_name='số sản phẩm')
     detail = models.TextField(null=True,blank=True,verbose_name="Mô tả chi tiết")

@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app.apps.AppConfig',
+    'app.apps.AppConfig', # thêm app vào đây
+    'django.contrib.humanize', # thêm app humanize vào đây giá tiền triệu và tỉ
 ]
 
 MIDDLEWARE = [
@@ -129,3 +130,6 @@ MEDIA_URL = '/images/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'app/static/images')
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+USE_THOUSAND_SEPARATOR = True
+THOUSAND_SEPARATOR = '.'
+DECIMAL_SEPARATOR = ','
