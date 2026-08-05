@@ -93,7 +93,6 @@
     <div class="d-flex align-items-center">
       {% if request.user.is_authenticated %}
         <span class="me-2">Xin chào <strong>{{ request.user.username }}</strong></span>
-ư
         {% if request.user.is_superuser or request.user.is_staff %}
           <a href="/admin/" class="btn btn-warning btn-sm me-2" target="_blank">Trang quản trị</a>
         {% endif %}
