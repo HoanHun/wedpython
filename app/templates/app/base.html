@@ -45,7 +45,7 @@
     const csrftoken = getCookie('csrftoken');
     </script>
     <title>WED Báng hàng </title>
-    <!-- Khai báo Favicon hiển thị trên thẻ trình duyệt -->
+    <!-- Khai báo hiển thị trên thẻ trình duyệt -->
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/images/rong.jpg' %}" />
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -103,7 +103,7 @@
         
           <a class="nav-link" href="{% url "dangnhap" %}">Đăng nhập</a>
         
-          <a class="nav-link" href="dangky">Đăng ký</a>
+          <a class="nav-link" href="{% url "dangky" %}">Đăng ký</a>
         </div>
     <div class"from-inline my-2 my-lg-0">
       <a herf = "{ % url  'cart' %}"><img id ="cart-icon" src = "{% static "app/images/images.jpg" %}">
