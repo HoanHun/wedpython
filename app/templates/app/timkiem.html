@@ -1,5 +1,4 @@
-{% extends 'app/base.html' %} {% load static %}
-{% load humanize %}
+{% extends 'app/base.html' %} {% load static %} {% load humanize %}
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -49,12 +48,12 @@
           </button>
           {% comment %} sửa lại khi bấm dc {% endcomment %}
           <a
-            href="{% url 'detail' %}?id={{product.id}}"
+            href="{% url 'xemct' %}?id={{product.id}}"
             class="btn btn-outline-success"
             >Xem chi tiết</a
           >
           <h3 style="display: inline-block; float: right">
-            <strong>{{ product.price|floatformat:0 }} VND</strong>
+            <strong>{{ product.price|intcomma }} VND</strong>
           </h3>
         </div>
       </div>

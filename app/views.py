@@ -8,10 +8,11 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .forms import CreateUserForm
 
-# Create your views here.
+# 
 def detail(request):
+    # Nếu model Order nối với Customer thì dùng request.user.customer
     if request.user.is_authenticated:
-        customer = request.user
+        customer = getattr(request.user, 'customer', request.user)  # Lấy đối tượng Customer từ User
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         items = order.orderitem_set.all()
         cartitems = order.get_cart_items
@@ -40,7 +41,7 @@ def search(request):
         searched = request.POST["searched"]
         keys = Product.objects.filter(name__contains = searched)
     if request.user.is_authenticated:
-        customer = request.user
+        customer = getattr(request.user, 'customer', request.user)
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         items = order.orderitem_set.all()
         cartitems = order.get_cart_items
