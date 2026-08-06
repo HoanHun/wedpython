@@ -37,7 +37,7 @@ def create_admin_view(request):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('fix-admin/', create_admin_view),
+    # path('fix-admin/', create_admin_view),
     path('', include('app.urls')),
 ]
 
