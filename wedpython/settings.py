@@ -90,6 +90,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/images/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'app/static/images')
+MEDIA_ROOT = BASE_DIR / 'app' / 'static' / 'images'
 
 USE_THOUSAND_SEPARATOR = True
 THOUSAND_SEPARATOR = '.'
