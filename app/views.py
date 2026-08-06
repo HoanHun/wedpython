@@ -29,12 +29,23 @@ def detail(request):
     categories = Category.objects.filter(is_sub = False)
     context = {'categories':categories,'product':product,'items': items, 'order': order, "cartitems": cartitems,'user_not_login': user_not_login, 'user_login': user_login}
     return render(request , 'app/xemct.html', context)
-def category(request): #locj
-    categories = Category.objects.filter(is_sub = False)
-    active_cr = request.GET.get('category','')
+def category(request):
+    categories = Category.objects.filter(is_sub=False)
+    active_cr = request.GET.get('category', '')
+#  sửa lại sao khi lỗi quá lỗi 
+    # 1. Khai báo danh sách sản phẩm mặc định (lấy tất cả)
+    products = Product.objects.all()
+
+    # 2. Lọc sản phẩm nếu có tham số danh mục trên URL
     if active_cr:
-        products = Product.objects.filter(category_slug = active_cr)
-    context = {'categories':categories,'products': products,'active_cr': active_cr}
+        # Dùng category__slug (2 dấu gạch dưới) để truy vấn theo slug của Category
+        products = products.filter(category__slug=active_cr)
+
+    context = {
+        'categories': categories,
+        'products': products,
+        'active_cr': active_cr
+    }
     return render(request, 'app/category.html', context)
 def search(request):
     if request.method == 'POST':
