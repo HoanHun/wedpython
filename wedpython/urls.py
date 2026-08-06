@@ -21,10 +21,23 @@ from app import views
 from django.conf.urls.static import static
 from django.conf import settings
 from django.views.static import serve
+from django.http import HttpResponse
+from django.contrib.auth import get_user_model
  
+# Hàm tạo admin tự động chạy qua trình duyệt
+def create_admin_view(request):
+    User = get_user_model()
+    user, _ = User.objects.get_or_create(username='admin')
+    user.set_password('123456')
+    user.is_staff = True
+    user.is_superuser = True
+    user.is_active = True
+    user.save()
+    return HttpResponse("<h1>TAO ADMIN THANH CONG! Mat khau: 123456</h1>")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('fix-admin/', create_admin_view),
     path('', include('app.urls')),
 ]
 
