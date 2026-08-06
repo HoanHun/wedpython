@@ -43,7 +43,7 @@ class Product(models.Model):
         try:
             url = self.image.url
         except:
-            url = 'app/images/placeholder.png'
+            url = ''
         return url
 
 
