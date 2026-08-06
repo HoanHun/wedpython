@@ -138,3 +138,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'app/static/images')
 USE_THOUSAND_SEPARATOR = True
 THOUSAND_SEPARATOR = '.'
 DECIMAL_SEPARATOR = ','
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
