@@ -48,12 +48,15 @@ class Product(models.Model):
     #         url = ''
     #     return url
     def static_image_path(self):
-        if self.image:
-            # Tự động lấy tên file ảnh (ví dụ: ao_gucci.jpg), viết thường toàn bộ để tránh lỗi Linux
-            filename = os.path.basename(str(self.image)).lower()
-            return f"app/images/{filename}"
+        try:
+            # Kiểm tra an toàn xem trường image có dữ liệu và tên file không nếu có
+            if self.image and hasattr(self.image, 'name') and self.image.name:
+                filename = os.path.basename(str(self.image.name)).lower()
+                return f"app/images/{filename}"
+        except Exception:
+            pass
+        # Mặc định nếu lỗi/không có ảnh thì dùng ảnh placeholder ảnh mặt định này
         return "app/images/placeholder.png"
-
 class Order(models.Model):
     customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=False, verbose_name="Khách hàng")
     day = models.DateTimeField(auto_now_add=True, verbose_name="Ngày đặt") 
