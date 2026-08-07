@@ -91,8 +91,9 @@ class OrderItem(models.Model):
 # tính tổng tiền của từng sản phẩm
     @property
     def get_total(self):
-        total = self.product.price * self.quantity
-        return total
+        if self.product and self.product.price:
+            return self.product.price * self.quantity
+        return 0
 class ShippingAddress(models.Model):
     customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=False, verbose_name="Khách hàng")
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=False, verbose_name="Đơn hàng")
