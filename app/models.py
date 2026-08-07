@@ -55,9 +55,7 @@ class Product(models.Model):
         try:
             if self.image and hasattr(self.image, 'name') and self.image.name:
                 filename = os.path.basename(str(self.image.name)).lower()
-                # Tự động xóa chuỗi mã hóa 7 ký tự ngẫu nhiên do Django Admin thêm vào (VD: _eouitfp)
-                clean_name = re.sub(r'_[a-z0-9]{7}(?=\.)', '', filename)
-                return f"app/images/{clean_name}"
+                return f"app/images/{filename}"
         except Exception:
             pass
         return "app/images/placeholder.png"
