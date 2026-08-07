@@ -44,7 +44,7 @@ cart_content %}
         <div style="flex: 1"><strong>Số lượng</strong></div>
         <div style="flex: 1"><strong>Tổng giá</strong></div>
       </div>
-      {% for item in items %}
+      {% for item in items %} {% if item.product %}
       <div class="cart-row">
         <div style="flex: 2">
           <img class="row-image" src="{{ item.product.ImageURL }}" />
@@ -71,7 +71,7 @@ cart_content %}
         </div>
         <div style="flex: 1"><p>{{ item.get_total|floatformat:0 }}</p></div>
       </div>
-      {% endfor %}
+      {% endif %} {% endfor %}
     </div>
   </div>
 </div>

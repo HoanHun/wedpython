@@ -49,6 +49,7 @@ class Product(models.Model):
     #     return url            
     # # Kiểm tra an toàn xem trường image có dữ liệu và tên file không nếu có
     # Mặc định nếu lỗi/không có ảnh thì dùng ảnh placeholder ảnh mặt định này
+
     def static_image_path(self):
         try:
             if self.image and hasattr(self.image, 'name') and self.image.name:
@@ -68,18 +69,27 @@ class Order(models.Model):
     def __str__(self):
         return str(self.id)
     #  đếm số lượng sản phẩm 
-    @property
-    def get_cart_items(self):
-        orderitems = self.orderitem_set.all()
-        total = sum([item.quantity for item in orderitems])
-        return total
+    # @property
+    # def get_cart_items(self):
+    #     orderitems = self.orderitem_set.all()
+    #     total = sum([item.quantity for item in orderitems])
+    #     return total
 
-    # tính tổng tiền
+    # # tính tổng tiền
+    # @property
+    # def get_cart_total(self):
+    #     orderitems = self.orderitem_set.all()
+    #     total = sum([item.get_total for item in orderitems])
+    #     return total
     @property
     def get_cart_total(self):
         orderitems = self.orderitem_set.all()
-        total = sum([item.get_total for item in orderitems])
-        return total
+        return sum([item.get_total for item in orderitems if item.product])
+
+    @property
+    def get_cart_items(self):
+        orderitems = self.orderitem_set.all()
+        return sum([item.quantity for item in orderitems if item.product])
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=False, verbose_name="Sản phẩm")
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=False, verbose_name="Đơn hàng")
@@ -91,8 +101,9 @@ class OrderItem(models.Model):
 # tính tổng tiền của từng sản phẩm
     @property
     def get_total(self):
-        total = self.product.price * self.quantity
-        return total
+        if self.product and self.product.price:
+            return self.product.price * self.quantity
+        return 0
 class ShippingAddress(models.Model):
     customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=False, verbose_name="Khách hàng")
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=False, verbose_name="Đơn hàng")
