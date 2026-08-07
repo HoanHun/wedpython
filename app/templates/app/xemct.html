@@ -1,5 +1,4 @@
-{% extends 'app/base.html' %} {% load static %}
-{% load humanize %}
+{% extends 'app/base.html' %} {% load static %} {% load humanize %}
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -28,8 +27,8 @@
         <div class="col-md-6 mb-4">
           <div class="d-flex justify-content-between">
             <img
-              src="{{i.ImageURL}}"
-              alt="Thumbnail 1"
+              src="{% static i.static_image_path %}"
+              alt="{{ product.name|default:'Thumbnail 1' }}"
               class="thumbnail rounded active"
               onclick="changeImage(event, this.src)"
             />
