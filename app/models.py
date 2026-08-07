@@ -49,8 +49,8 @@ class Product(models.Model):
     #     return url
     def static_image_path(self):
         if self.image:
-            # Lấy nguyên tên file (ví dụ: ao_gucci.jpg) bỏ qua mọi thư mục thừa
-            filename = os.path.basename(str(self.image))
+            # Tự động lấy tên file ảnh (ví dụ: ao_gucci.jpg), viết thường toàn bộ để tránh lỗi Linux
+            filename = os.path.basename(str(self.image)).lower()
             return f"app/images/{filename}"
         return "app/images/placeholder.png"
 
