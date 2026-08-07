@@ -47,16 +47,12 @@ class Product(models.Model):
     #     except:
     #         url = ''
     #     return url
-    def ImageURL(self):
-        try:
-            if self.image:
-                # Tách lấy tên file ảnh (ví dụ: tui_lucius.jpg)
-                filename = os.path.basename(str(self.image))
-                # Trỏ thẳng tới thư mục Static đang hoạt động tốt trên Render
-                return static('app/images/' + filename)
-        except Exception:
-            pass
-        return static('app/images/placeholder.png')
+    def static_image_path(self):
+        if self.image:
+            # Lấy nguyên tên file (ví dụ: ao_gucci.jpg) bỏ qua mọi thư mục thừa
+            filename = os.path.basename(str(self.image))
+            return f"app/images/{filename}"
+        return "app/images/placeholder.png"
 
 class Order(models.Model):
     customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=False, verbose_name="Khách hàng")
