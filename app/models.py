@@ -62,7 +62,7 @@ class Order(models.Model):
     customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=False, verbose_name="Khách hàng")
     day = models.DateTimeField(auto_now_add=True, verbose_name="Ngày đặt") 
     complete = models.BooleanField(default=False, null=True, blank=False, verbose_name="Đã hoàn thành")
-    transaction_id = models.CharField(max_length=100, null=True, blank=True, verbose_name="Mã giao dịch")
+    transaction_id = models.CharField(max_length=100, null=True, blank=True, verbose_name="Mã giao dịch")    
     class Meta:
         verbose_name = "Đơn hàng"
         verbose_name_plural = "Quản lý đơn hàng"
@@ -89,19 +89,22 @@ class Order(models.Model):
     @property
     def get_cart_items(self):
         orderitems = self.orderitem_set.all()
-        return sum([item.quantity for item in orderitems if item.product])
+        # Ép (item.quantity or 0) để phòng trường hợp quantity bị None
+        return sum([(item.quantity or 0) for item in orderitems if item.product])
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=False, verbose_name="Sản phẩm")
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=False, verbose_name="Đơn hàng")
     quantity = models.IntegerField(default=0, null=True, blank=True, verbose_name="Số lượng")
     day_added = models.DateTimeField(auto_now_add=True, verbose_name="Ngày thêm")
+
     class Meta:
         verbose_name = "Chi tiết đơn hàng"
         verbose_name_plural = "Chi tiết đơn hàng"
-# tính tổng tiền của từng sản phẩm
+
     @property
     def get_total(self):
-        if self.product and self.product.price:
+        # Bắt buộc có product, price và quantity thì mới thực hiện phép nhân
+        if self.product and self.product.price and self.quantity:
             return self.product.price * self.quantity
         return 0
 class ShippingAddress(models.Model):

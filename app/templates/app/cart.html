@@ -47,29 +47,34 @@ cart_content %}
       {% for item in items %} {% if item.product %}
       <div class="cart-row">
         <div style="flex: 2">
-          <img class="row-image" src="{{ item.product.ImageURL }}" />
+          <!-- Đã sửa ImageURL thành static_image_path -->
+          <img
+            class="row-image"
+            src="{% static item.product.static_image_path %}"
+          />
         </div>
         <div style="flex: 2"><p>{{ item.product.name }}</p></div>
-        <div style="flex: 1"><p>{{ item.product.price }}</p></div>
+        <div style="flex: 1">
+          <p>{{ item.product.price|floatformat:0 }} VNĐ</p>
+        </div>
         <div style="flex: 1; display: flex; align-items: center">
-          <p class="quantity">{{ item.quantity }}</p>
+          <p class="quantity">{{ item.quantity|default:0 }}</p>
           <div class="quantity">
             <img
               data-product="{{item.product.id}}"
               data-action="add"
               class="chg-quantity update-cart"
-              src="{% static  'app/images/arrow-up.png' %}"
+              src="{% static 'app/images/arrow-up.png' %}"
             />
-
             <img
               data-product="{{item.product.id}}"
               data-action="remove"
               class="chg-quantity update-cart"
-              src="{% static  'app/images/arrow-down.png' %}"
+              src="{% static 'app/images/arrow-down.png' %}"
             />
           </div>
         </div>
-        <div style="flex: 1"><p>{{ item.get_total|floatformat:0 }}</p></div>
+        <div style="flex: 1"><p>{{ item.get_total|floatformat:0 }} VNĐ</p></div>
       </div>
       {% endif %} {% endfor %}
     </div>
