@@ -1,83 +1,72 @@
-<!--extends là load trong mở rộng vào trang cơ sở là trang base.html-->
-<!--load static là load các file tĩnh css, js, image vào trang-->
-<!--block cart_content là phần nội dung giỏ hàng của trang-->
 {% extends 'app/base.html' %} {% load static %} {% load humanize %} {% block
 cart_content %}
+<div class="box-element">
+  <a class="btn btn-outline-dark" href="{% url 'home' %}"
+    >&#x2190; Tiếp tục mua hàng</a
+  >
+  <br /><br />
+  <table class="table">
+    <tr>
+      <th>
+        <h5>Mục: <strong>{{ cartitems }}</strong></h5>
+      </th>
+      <th>
+        <h5>
+          Tổng giá:
+          <strong>{{ order.get_cart_total|floatformat:0 }} VNĐ</strong>
+        </h5>
+      </th>
+      <th>
+        <a
+          style="float: right; margin: 5px"
+          class="btn btn-success"
+          href="{% url 'checkout' %}"
+          >Thanh toán</a
+        >
+      </th>
+    </tr>
+  </table>
+</div>
 
-<div class="row">
-  <div class="col-lg-12">
-    <div class="box-element">
-      <a class="btn btn-outline-dark" href="{% url 'home' %}"
-        >&#x2190; Tiếp tục mua hàng</a
-      >
-
-      <br />
-      <br />
-      <table class="table">
-        <tr>
-          <th>
-            <h5>Mục: <strong>{{order.get_cart_items}}</strong></h5>
-          </th>
-          <th>
-            <h5>
-              Tổng giá:<strong> {{order.get_cart_total|floatformat:0}}</strong>
-            </h5>
-          </th>
-          <th>
-            <a
-              style="float: right; margin: 5px"
-              class="btn btn-success"
-              href="{% url 'checkout' %}"
-              >Kiểm tra</a
-            >
-          </th>
-        </tr>
-      </table>
-    </div>
-
-    <br />
-    <div class="box-element">
-      <div class="cart-row">
-        <div style="flex: 2"></div>
-        <div style="flex: 2"><strong>Mục</strong></div>
-        <div style="flex: 1"><strong>Giá</strong></div>
-        <div style="flex: 1"><strong>Số lượng</strong></div>
-        <div style="flex: 1"><strong>Tổng giá</strong></div>
-      </div>
-      {% for item in items %} {% if item.product %}
-      <div class="cart-row">
-        <div style="flex: 2">
-          <!-- Đã sửa ImageURL thành static_image_path -->
-          <img
-            class="row-image"
-            src="{% static item.product.static_image_path %}"
-          />
-        </div>
-        <div style="flex: 2"><p>{{ item.product.name }}</p></div>
-        <div style="flex: 1">
-          <p>{{ item.product.price|floatformat:0 }} VNĐ</p>
-        </div>
-        <div style="flex: 1; display: flex; align-items: center">
-          <p class="quantity">{{ item.quantity|default:0 }}</p>
-          <div class="quantity">
-            <img
-              data-product="{{item.product.id}}"
-              data-action="add"
-              class="chg-quantity update-cart"
-              src="{% static 'app/images/arrow-up.png' %}"
-            />
-            <img
-              data-product="{{item.product.id}}"
-              data-action="remove"
-              class="chg-quantity update-cart"
-              src="{% static 'app/images/arrow-down.png' %}"
-            />
-          </div>
-        </div>
-        <div style="flex: 1"><p>{{ item.get_total|floatformat:0 }} VNĐ</p></div>
-      </div>
-      {% endif %} {% endfor %}
-    </div>
+<br />
+<div class="box-element">
+  <div class="cart-row">
+    <div style="flex: 2"></div>
+    <div style="flex: 2"><strong>Sản phẩm</strong></div>
+    <div style="flex: 1"><strong>Giá</strong></div>
+    <div style="flex: 1"><strong>Số lượng</strong></div>
+    <div style="flex: 1"><strong>Tổng cộng</strong></div>
   </div>
+
+  {% for item in items %} {% if item.product %}
+  <div class="cart-row">
+    <div style="flex: 2">
+      <img
+        class="row-image"
+        src="{% static item.product.static_image_path %}"
+      />
+    </div>
+    <div style="flex: 2"><p>{{ item.product.name }}</p></div>
+    <div style="flex: 1"><p>{{ item.product.price|floatformat:0 }} VNĐ</p></div>
+    <div style="flex: 1; display: flex; align-items: center">
+      <p class="quantity">{{ item.quantity|default:0 }}</p>
+      <div class="quantity" style="margin-left: 8px">
+        <img
+          data-product="{{ item.product.id }}"
+          data-action="add"
+          class="chg-quantity update-cart"
+          src="{% static 'app/images/arrow-up.png' %}"
+        />
+        <img
+          data-product="{{ item.product.id }}"
+          data-action="remove"
+          class="chg-quantity update-cart"
+          src="{% static 'app/images/arrow-down.png' %}"
+        />
+      </div>
+    </div>
+    <div style="flex: 1"><p>{{ item.get_total|floatformat:0 }} VNĐ</p></div>
+  </div>
+  {% endif %} {% endfor %}
 </div>
 {% endblock cart_content %}
