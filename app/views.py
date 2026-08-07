@@ -111,34 +111,49 @@ def home(request):
 def cart(request):
     if request.user.is_authenticated:
         customer = request.user
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        # Dùng filter().first() thay cho get_or_create() để tuyệt đối không bị sập khi có nhiều hơn 1 order
+        order = Order.objects.filter(customer=customer, complete=False).first()
+        if not order:
+            order = Order.objects.create(customer=customer, complete=False)
+
         items = order.orderitem_set.all()
         cartitems = order.get_cart_items
-        user_not_login = 'hidden'
-        user_login = 'show'
+        user_not_login = "hidden"
+        user_login = "show"
     else:
         items = []
-        order = {'get_cart_total': 0, 'get_cart_items': 0}
-        cartitems = order['get_cart_items']
-        user_not_login = 'show'
-        user_login = 'hidden'
-    context = {'items': items, 'order': order, "cartitems": cartitems,'user_not_login': user_not_login, 'user_login': user_login}
-    return render(request , 'app/cart.html', context)
+        order = {"get_cart_total": 0, "get_cart_items": 0}
+        cartitems = order["get_cart_items"]
+        user_not_login = "show"
+        user_login = "hidden"
+
+    context = {
+        "items": items,
+        "order": order,
+        "cartitems": cartitems,
+        "user_not_login": user_not_login,
+        "user_login": user_login,
+    }
+    return render(request, "app/cart.html", context)
 def checkout(request):
     if request.user.is_authenticated:
         customer = request.user
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        # Dùng filter().first() thay cho get_or_create() để tuyệt đối không bị sập khi có nhiều hơn 1 order
+        order = Order.objects.filter(customer=customer, complete=False).first()
+        if not order:
+            order = Order.objects.create(customer=customer, complete=False)
+
         items = order.orderitem_set.all()
         cartitems = order.get_cart_items
-        user_not_login = 'hidden'
-        user_login = 'show'
+        user_not_login = "hidden"
+        user_login = "show"
     else:
         items = []
-        order = {'get_cart_total': 0, 'get_cart_items': 0}
-        cartitems = order['get_cart_items']
-        user_not_login = 'show'
-        user_login = 'hidden'
-    context = {'items': items, 'order': order, "cartitems": cartitems,'user_not_login': user_not_login, 'user_login': user_login}
+        order = {"get_cart_total": 0, "get_cart_items": 0}
+        cartitems = order["get_cart_items"]
+        user_not_login = "show"
+        user_login = "hidden"
+    context = {"items": items, "order": order, "cartitems": cartitems, "user_not_login": user_not_login, "user_login": user_login}
     return render(request , 'app/checkout.html', context)
 def updateItem(request):
     data = json.loads(request.body)

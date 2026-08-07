@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-t(c((2=#4fo1j12wfr&g++ncao4y%lb+ep=&@067c1jntpv0yv'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['wedpy.onrender.com', 'localhost', '127.0.0.1']
 
