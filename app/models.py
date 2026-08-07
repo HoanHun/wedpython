@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+import os
+from django.templatetags.static import static
 
 # Create your models here.
 #  bang phan loai hang hao
@@ -39,13 +41,22 @@ class Product(models.Model):
         return self.name or ''
     # điều chỉnh thuộc tính 
     @property 
+    # def ImageURL(self):
+    #     try:
+    #         url = self.image.url
+    #     except:
+    #         url = ''
+    #     return url
     def ImageURL(self):
         try:
-            url = self.image.url
-        except:
-            url = ''
-        return url
-
+            if self.image:
+                # Tách lấy tên file ảnh (ví dụ: tui_lucius.jpg)
+                filename = os.path.basename(str(self.image))
+                # Trỏ thẳng tới thư mục Static đang hoạt động tốt trên Render
+                return static('app/images/' + filename)
+        except Exception:
+            pass
+        return static('app/images/placeholder.png')
 
 class Order(models.Model):
     customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=False, verbose_name="Khách hàng")
