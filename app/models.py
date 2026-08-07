@@ -50,12 +50,14 @@ class Product(models.Model):
     # 
     # # Kiểm tra an toàn xem trường image có dữ liệu và tên file không nếu có
     # Mặc định nếu lỗi/không có ảnh thì dùng ảnh placeholder ảnh mặt định này
-
+    @property
     def static_image_path(self):
         try:
             if self.image and hasattr(self.image, 'name') and self.image.name:
                 filename = os.path.basename(str(self.image.name)).lower()
-                return f"app/images/{filename}"
+                # Xóa chuỗi rác do Admin tạo ra (như _eouitfp) để về đúng file trong VS Code
+                clean_name = re.sub(r'_[a-z0-9]{7}(?=\.)', '', filename)
+                return f"app/images/{clean_name}"
         except Exception:
             pass
         return "app/images/placeholder.png"
